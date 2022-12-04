@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
 const jsonwebtoken = require('jsonwebtoken');
 
-// recipes data
-const recipes = require('./list.json');
+// quizzs data
+const quizz = require('./list.json');
 
 // vars
 const app = express();
@@ -48,7 +48,7 @@ app.use(bodyParser.json());
 
 // cors
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3006');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
 
@@ -71,10 +71,10 @@ app.get('/', (req, res) => {
   res.sendFile( __dirname + '/index.html');
 });
 
-// Liste des recettes : GET /recipes
-app.get('/recipes', (req, res) => {
-  console.log('>> GET /recipes');
-  res.json(recipes);
+// Liste des recettes : GET /quizzs
+app.get('/quizz', (req, res) => {
+  console.log('>> GET /quizz');
+  res.json(quizz);
 });
 
 
@@ -106,14 +106,14 @@ app.post('/login', (req, res) => {
   }
 });
 
-// Favorites recipes : GET /favorites
+// Favorites quizzs : GET /favorites
 app.get('/favorites', authorizationMiddleware, (req, res) => {
   console.log('>> GET /favorites', req.user);
 
   const user = db.users.find(user => user.id === req.user.userId);
   console.log('<< 200');
   res.json({ 
-    favorites: recipes.filter((recipe) => user.favorites.includes(recipe.id)), 
+    favorites: quizzes.filter((quizz) => user.favorites.includes(quizz.id)), 
   });
 });
 
